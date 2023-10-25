@@ -10,4 +10,5 @@ Currently, two official plugins are available:
 npm installs:
 
 npm install
+
 npm install @mui/material @emotion/react @emotion/styled ag-grid-community ag-grid-react
