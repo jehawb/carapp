@@ -4,6 +4,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from "@mui/material";
 import { Snackbar } from "@mui/material";
+import AddCar from "./AddCar";
 
 export default function Carlist() {
 
@@ -26,8 +27,14 @@ export default function Carlist() {
                     Delete
                 </Button>,
             width: 120
-        }
+        },
+        // {
+        //     cellRenderer: params => <EditCar params={params} updateCar={updateCar} />,
+        //     width: 120
+        // }
     ]
+
+    // REST api functions
 
     // call getCars() function when rendering the component very first time
     useEffect(() => getCars(), []);
@@ -62,8 +69,29 @@ export default function Carlist() {
             .catch(error => console.error(error));
     }
 
+    const addCar = (car) => {
+        alert("adding car to database, maybe");
+
+        fetch(REST_URL, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(car)
+        })
+        .then(response => {
+            if(response.ok) {
+                getCars();
+            } else {
+                alert("Something went wrong while adding a new car.");
+            }
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Rendering
+
     return (
         <>
+            <AddCar addCar={addCar} />
             <div className="ag-theme-material"
                 style={{ height: '700px', width: '95%', padding: "1%", margin: 'auto' }} >
                 <AgGridReact
