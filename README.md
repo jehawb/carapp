@@ -14,3 +14,5 @@ npm install
 npm install @mui/material @emotion/react @emotion/styled
 
 npm install ag-grid-community ag-grid-react
+
+npm install gh-pages --save-dev
