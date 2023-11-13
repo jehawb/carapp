@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from "@mui/material";
 import { Snackbar } from "@mui/material";
 import AddCar from "./AddCar";
+import EditCar from "./EditCar";
 
 export default function Carlist() {
 
@@ -22,16 +23,16 @@ export default function Carlist() {
         { field: "year" },
         { field: "price" },
         {
+            cellRenderer: params => <EditCar updateCar={updateCar} car={params.data} />,
+            width: 120
+        },
+        {
             cellRenderer: params =>
                 <Button size="small" color="error" onClick={() => deleteCar(params)}>
                     Delete
                 </Button>,
             width: 120
         },
-        // {
-        //     cellRenderer: params => <EditCar params={params} updateCar={updateCar} />,
-        //     width: 120
-        // }
     ]
 
     // REST api functions
@@ -84,6 +85,17 @@ export default function Carlist() {
                 alert("Something went wrong while adding a new car.");
             }
         })
+        .catch(err => console.error(err));
+    }
+
+    const updateCar = (car, link) => {
+
+        fetch(link, {
+            method: 'PUT',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(car)
+        })
+        .then(response => getCars())
         .catch(err => console.error(err));
     }
 

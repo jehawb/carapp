@@ -1,13 +1,19 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function AddCar(props) {
+export default function EditCar(props) {
 
     // states
     const [car, setCar] = useState({brand: '', model: ''});
     const [showDialog, setShowDialog] = useState(false);
 
     // functions
+    const handleClickOpen = () => {
+        console.log(props.car);
+        setCar({...car, brand: props.car.brand, model: props.car.model});
+        setShowDialog(true);
+    }
+
     const handleInputChanged = (event) => {
         setCar({...car, [event.target.name]: event.target.value});
     }
@@ -20,20 +26,20 @@ export default function AddCar(props) {
         }
     }
 
-    const handleSave = () => {
-        props.addCar(car);
+    const updateCar = () => {
+        props.updateCar(car, props.car._links.car.href);
         setShowDialog(false);
-        setCar({brand: '', model: ''}); // Empties the car state variable after saving the car into database
+        setCar({brand: '', model: ''});
     }
     
     // return
     return(
         <>
-            <Button onClick={() => setShowDialog(true)}>New Car</Button>
+            <Button onClick={handleClickOpen}>Edit</Button>
             <Dialog 
                 open={showDialog}
                 onClose={handleClose}>
-                <DialogTitle>New Car Addeded!</DialogTitle>
+                <DialogTitle>Edit a car!</DialogTitle>
                 <DialogContent>
                     <Stack>
                     <TextField 
@@ -50,7 +56,7 @@ export default function AddCar(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSave}>Add Car</Button>
+                    <Button onClick={updateCar}>Edit</Button>
                 </DialogActions>
             </Dialog>
         </>
